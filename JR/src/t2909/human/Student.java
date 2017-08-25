@@ -1,8 +1,6 @@
 package t2909.human;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Student extends UniversityPerson{
     private double averageGrade;
@@ -30,10 +28,6 @@ public class Student extends UniversityPerson{
 
     public int getCourse() {
         return course;
-    }
-
-    public void printData() {
-        System.out.println("Студент: " + name);
     }
 
     public void incAverageGradeBy01() {

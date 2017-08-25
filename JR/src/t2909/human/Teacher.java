@@ -1,8 +1,5 @@
 package t2909.human;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Teacher extends UniversityPerson {
     private int numberOfStudents;
 
@@ -10,8 +7,7 @@ public class Teacher extends UniversityPerson {
         super(name, age);
         this.numberOfStudents = numberOfStudents;
     }
-
-
+    
     public void live() {
         teach();
     }
@@ -22,9 +18,5 @@ public class Teacher extends UniversityPerson {
     }
 
     public void teach() {
-    }
-
-    public void printData() {
-        System.out.println("Преподаватель: " + name);
     }
 }

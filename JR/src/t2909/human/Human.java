@@ -89,4 +89,7 @@ public class Human implements Alive{
         return "Человек";
     }
 
+    public void printData() {
+        System.out.println(getPosition() + ": " + name);
+    }
 }
