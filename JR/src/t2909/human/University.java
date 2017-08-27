@@ -39,17 +39,48 @@ public class University {
         this.age = age;
     }
 
-    public Student getStudentWithAverageGrade() {
+    public Student getStudentWithAverageGrade(double averageGrade) {
         //TODO:
-        return null;
+        Student s1 = null;
+        for (Student s: students) {
+            if(s.getAverageGrade() == averageGrade){
+                s1 = s;
+                break;
+            }
+        }
+        return s1;
     }
 
-    public Student getStudentWithMaxAverageGrade(double averageGrade) {
+    public Student getStudentWithMaxAverageGrade() {
         //TODO:
-        return null;
+        Student s1 = students.get(0);
+        double average = s1.getAverageGrade();
+        for(Student s: students){
+            if(s.getAverageGrade() > average){
+                s1 = s;
+                average = s.getAverageGrade();
+            }
+        }
+        return s1;
     }
 
-    public void getStudentWithMinAverageGradeAndExpel() {
+    public Student getStudentWithMinAverageGrade() {
         //TODO:
+        Student s1 = students.get(0);
+        double average = s1.getAverageGrade();
+        for(Student s: students){
+            if(s.getAverageGrade() < average){
+                s1 = s;
+                average = s.getAverageGrade();
+            }
+        }
+        return s1;
+    }
+
+    public void expel(Student student) {
+        //TODO:
+        if(students.contains(student)){
+            students.remove(student);
+        }
     }
 }
