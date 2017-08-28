@@ -2,15 +2,21 @@ package t2909.human;
 
 public class Worker extends Human{
     private double salary;
-    public String company;
 
-    public Worker(String name, int age) {
-        super(name, age);
+    public String getCompany() {
+        return company;
     }
 
-    /*public void live() {
-        human.live();
-    }*/
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    private String company;
+
+    public Worker(String name, int age) {
+
+        super(name, age);
+    }
 
     public double getSalary() {
         return salary;
