@@ -2,10 +2,14 @@ package t2909.car;
 
 import java.util.Date;
 
-public class Car {
+public abstract class Car {
     static public final int TRUCK = 0;
     static public final int SEDAN = 1;
     static public final int CABRIOLET = 2;
+
+    static public final int MAX_CABRIOLET_SPEED = 90;
+    static public final int MAX_SEDAN_SPEED = 120;
+    static public final int MAX_TRUCK_SPEED = 80;
 
     double fuel;
 
@@ -39,13 +43,11 @@ public class Car {
         return consumption;
     }
 
-    public int getNumberOfPassengersCanBeTransferred() {
-        if (!isDriverAvailable())
+    public int getNumberOfPassengersCanBeTransferred() {        
+        if (!canPassengersBeTransferred())
             return 0;
-        if (fuel <= 0)
-            return 0;
-
-        return numberOfPassengers;
+        else
+            return numberOfPassengers;
     }
 
     public boolean isDriverAvailable() {
@@ -56,13 +58,10 @@ public class Car {
         this.driverAvailable = driverAvailable;
     }
 
-    public void startMoving() {
-        if (numberOfPassengers > 0) {
+    public void startMoving() {        
+        if (numberOfPassengers > 0)
             fastenPassengersBelts();
-            fastenDriverBelt();
-        } else {
-            fastenDriverBelt();
-        }
+        fastenDriverBelt();
     }
 
     public void fastenPassengersBelts() {
@@ -71,13 +70,7 @@ public class Car {
     public void fastenDriverBelt() {
     }
 
-    public int getMaxSpeed() {
-        if (type == TRUCK)
-            return 80;
-        if (type == SEDAN)
-            return 120;
-        return 90;
-    }
+    public abstract int getMaxSpeed();
 
     public static Car create(int type, int numberOfPassengers){
         if(type == Car.TRUCK) {
@@ -86,10 +79,9 @@ public class Car {
         else if (type == Car.SEDAN) {
             return new Sedan(numberOfPassengers);
         }
-        else if (type == Car.CABRIOLET) {
+        else {
             return new Cabriolet(numberOfPassengers);
         }
-        else return new Car(type, numberOfPassengers);
     }
 
     public boolean isSummer(Date date , Date summerStart, Date summerEnd){
@@ -105,5 +97,12 @@ public class Car {
 
     public double getSummerConsumption(int length){
         return length*summerFuelConsumption;
+    }
+
+    private boolean canPassengersBeTransferred(){
+        if(isDriverAvailable() && fuel >0)
+            return true;
+        else
+            return false;
     }
 }
