@@ -10,9 +10,18 @@ public class Solution extends TimerTask {
         if (original == null) {
             throw new NullPointerException();
         }
-        this.original = original;
-        this.handler = null;    //init handler here
+        this.original = original;        
+      //------------------------------------ init handler here
+        this.handler = new Thread.UncaughtExceptionHandler(){
+
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                String name = t.getName().replaceAll(".","*");
+                System.out.println(e.getMessage().replaceAll(t.getName(),name));
             }
+        };
+        //------------------------------------
+        }
 
     public void run() {
         try {
