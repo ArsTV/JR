@@ -15,7 +15,7 @@ public class Solution {
         }
     }
 
-    public static class Soldier {
+    public static class Soldier implements Comparable<Soldier> {
         private String name;
         private int height;
 
@@ -24,5 +24,9 @@ public class Solution {
             this.height = height;
         }
 
+        @Override
+        public int compareTo(Soldier o) {
+            return o.height - this.height;
+        }
     }
 }
