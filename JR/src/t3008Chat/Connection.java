@@ -17,7 +17,7 @@ public class Connection implements Closeable{
         this.in = new ObjectInputStream(socket.getInputStream());
     }
 
-    void send (Message message) throws IOException{
+    public void send (Message message) throws IOException{
         synchronized (out){
             out.writeObject(message);
         }
