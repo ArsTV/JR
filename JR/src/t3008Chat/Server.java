@@ -60,6 +60,16 @@ public class Server {
                 }
             }
         }
+        
+        //send to the client information about other clients who was connected
+        private void sendListOfUsers(Connection connection, String userName) throws IOException{
+            for(Map.Entry<String, Connection> entry: connectionMap.entrySet()){
+                String name = entry.getKey();
+                if(!name.equals(userName)){
+                    connection.send(new Message(MessageType.USER_ADDED, name));
+                }
+            }
+        }
     }
 
 }
