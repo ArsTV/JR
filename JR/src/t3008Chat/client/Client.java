@@ -61,14 +61,17 @@ public class Client extends Thread{
             ConsoleHelper.writeMessage(message);
         }
 
+        //massage that user connected
         protected void informAboutAddingNewUser(String userName){
             ConsoleHelper.writeMessage("User " + userName + " connected.");
         }
 
+      //massage that user disconnected
         protected void informAboutDeletingNewUser(String userName){
             ConsoleHelper.writeMessage("User " + userName + " disconnected.");
         }
 
+        //client connected and have to awake main Client thread
         protected void notifyConnectionStatusChanged(boolean clientConnected){
             synchronized (Client.this){
                 Client.this.clientConnected = clientConnected;
