@@ -44,6 +44,36 @@ public class Server {
         Handler(Socket socket){
             this.socket = socket;
         }
+        
+        @Override
+        public void run() {
+            if(socket !=null && socket.getRemoteSocketAddress() != null){
+                ConsoleHelper.writeMessage("New connection established with socket address: " + socket.getRemoteSocketAddress());
+            }
+            String userName = null;
+
+            try {
+                Connection connection = new Connection(socket);
+
+                userName = serverHandshake(connection);
+
+                sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
+                sendListOfUsers(connection, userName);
+                serverMainLoop(connection, userName);
+
+
+            } catch (IOException e ) {
+                ConsoleHelper.writeMessage("IOException has occurred: " + e);
+            } catch (ClassNotFoundException e){
+                ConsoleHelper.writeMessage("Class not found: " + e);
+            } finally {
+                if (userName != null){
+                    connectionMap.remove(userName);
+                    sendBroadcastMessage(new Message(MessageType.USER_REMOVED, userName));
+                    ConsoleHelper.writeMessage("Connection was closed");
+                }
+            }
+        }
 
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
             for (; ; ) {
