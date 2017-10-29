@@ -23,7 +23,7 @@ public class Connection implements Closeable{
         }
     }
 
-    Message receive() throws IOException, ClassNotFoundException{
+    public Message receive() throws IOException, ClassNotFoundException{
         synchronized(in){
             return (Message)in.readObject();
         }
