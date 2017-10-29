@@ -56,6 +56,25 @@ public class Client extends Thread{
     }
 
     public class SocketThread extends Thread{
+
+        protected void processIncomingMessage(String message){
+            ConsoleHelper.writeMessage(message);
+        }
+
+        protected void informAboutAddingNewUser(String userName){
+            ConsoleHelper.writeMessage("User " + userName + " connected.");
+        }
+
+        protected void informAboutDeletingNewUser(String userName){
+            ConsoleHelper.writeMessage("User " + userName + " disconnected.");
+        }
+
+        protected void notifyConnectionStatusChanged(boolean clientConnected){
+            synchronized (Client.this){
+                Client.this.clientConnected = clientConnected;
+                Client.this.notify();
+            }
+        }
     }
     
     protected String getServerAddress(){
