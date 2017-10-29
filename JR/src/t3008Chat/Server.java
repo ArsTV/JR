@@ -54,14 +54,12 @@ public class Server {
 
             try {
                 Connection connection = new Connection(socket);
-
                 userName = serverHandshake(connection);
 
                 sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
                 sendListOfUsers(connection, userName);
                 serverMainLoop(connection, userName);
-
-
+                
             } catch (IOException e ) {
                 ConsoleHelper.writeMessage("IOException has occurred: " + e);
             } catch (ClassNotFoundException e){
