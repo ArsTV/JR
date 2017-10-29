@@ -1,6 +1,7 @@
 package t3008Chat.client;
 
 import java.io.IOException;
+import java.net.Socket;
 
 import t3008Chat.Connection;
 import t3008Chat.ConsoleHelper;
@@ -56,6 +57,23 @@ public class Client extends Thread{
     }
 
     public class SocketThread extends Thread{
+    	
+    	@Override
+        public void run() {
+
+            try {
+                Socket socket = new Socket(getServerAddress(), getServerPort());
+                connection = new Connection(socket);
+                clientHandshake();
+                clientMainLoop();
+            } catch (IOException e) {
+                ConsoleHelper.writeMessage("IOException!");
+                notifyConnectionStatusChanged(false);
+            } catch (ClassNotFoundException e) {
+                ConsoleHelper.writeMessage("Class not found exception.");
+                notifyConnectionStatusChanged(false);
+            }
+        }
 
         protected void processIncomingMessage(String message){
             ConsoleHelper.writeMessage(message);
