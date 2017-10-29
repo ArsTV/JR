@@ -61,12 +61,24 @@ public class Server {
             }
         }
         
-        //send to the client information about other clients who was connected
+        //send to the client list other clients who was connected
         private void sendListOfUsers(Connection connection, String userName) throws IOException{
             for(Map.Entry<String, Connection> entry: connectionMap.entrySet()){
                 String name = entry.getKey();
                 if(!name.equals(userName)){
                     connection.send(new Message(MessageType.USER_ADDED, name));
+                }
+            }
+        }
+        
+        //server processing of messages
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException{
+            for(;;){
+                Message message = connection.receive();
+                if(message !=null && message.getType() == MessageType.TEXT){
+                    sendBroadcastMessage(new Message(MessageType.TEXT, userName + ": " + message.getData()));
+                } else {
+                    ConsoleHelper.writeMessage("Text message error!");
                 }
             }
         }
