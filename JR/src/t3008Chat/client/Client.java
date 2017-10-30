@@ -60,15 +60,16 @@ public class Client extends Thread{
     	
     	@Override
         public void run() {
-
             try {
                 Socket socket = new Socket(getServerAddress(), getServerPort());
                 connection = new Connection(socket);
                 clientHandshake();
                 clientMainLoop();
+                
             } catch (IOException e) {
                 ConsoleHelper.writeMessage("IOException!");
                 notifyConnectionStatusChanged(false);
+                
             } catch (ClassNotFoundException e) {
                 ConsoleHelper.writeMessage("Class not found exception.");
                 notifyConnectionStatusChanged(false);
