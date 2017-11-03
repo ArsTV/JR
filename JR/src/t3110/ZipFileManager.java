@@ -24,8 +24,6 @@ public class ZipFileManager {
             ZipEntry zipEntry = new ZipEntry(source.getFileName().toString());
 
             zipOutputStream.putNextEntry(zipEntry);
-
-            
            
 //****************
             zipOutputStream.write(Files.readAllBytes(source));
