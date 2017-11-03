@@ -16,19 +16,13 @@ public class Archiver {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String path = reader.readLine();
 
-        /*Pattern pattern = Pattern.compile("\\w+\\.zip");
-
-        Matcher matcher = pattern.matcher(path);
-        matcher.find();
-        String fileName = matcher.group();*/
-
         Path path1 = Paths.get(path);
 
         ZipFileManager zipFileManager = new ZipFileManager(path1);
 
-        Path path2 = Paths.get(reader.readLine());
+        //Path path2 = Paths.get(reader.readLine());
 
-        zipFileManager.createZip(path2);
+        zipFileManager.createZip(path1);
 
         reader.close();
 
