@@ -1,12 +1,8 @@
 package t3110;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 
-import t3110.command.ExitCommand;
+import t3110.exception.WrongZipFileException;
 
 
 /**
@@ -14,22 +10,34 @@ import t3110.command.ExitCommand;
  */
 public class Archiver {
     public static void main(String[] args) throws IOException, Exception {
-        System.out.println("Enter full path of the archive.");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String path = reader.readLine();
+    	Operation operation;
+        for(;;){
+            try{
+                operation = askOperation();
+                CommandExecutor.execute(operation);
 
-        Path path1 = Paths.get(path);
+                if(operation == Operation.EXIT)
+                    break;
 
-        ZipFileManager zipFileManager = new ZipFileManager(path1);
+            }catch (WrongZipFileException e){
+                ConsoleHelper.writeMessage("You did not select an archive file or selected the wrong file.");
+            } catch (Exception e){
+                ConsoleHelper.writeMessage("An error has occurred. Check the entered data.");
+            }
 
-        //Path path2 = Paths.get(reader.readLine());
+        }
+    }
 
-        zipFileManager.createZip(path1);
+    //asking about type of operation and return it
+    public static Operation askOperation() throws IOException {
+        ConsoleHelper.writeMessage("Write operation number.");
+        ConsoleHelper.writeMessage(Operation.CREATE.ordinal() +  " - to archive the file.");
+        ConsoleHelper.writeMessage(Operation.ADD.ordinal() +     " - add file to the archive.");
+        ConsoleHelper.writeMessage(Operation.REMOVE.ordinal() +  " - remove file frome the archive.");
+        ConsoleHelper.writeMessage(Operation.EXTRACT.ordinal() + " - extract the archive.");
+        ConsoleHelper.writeMessage(Operation.CONTENT.ordinal() + " - show the list of archived files.");
+        ConsoleHelper.writeMessage(Operation.EXIT.ordinal() +    " - exit.");
 
-        reader.close();
-        
-        ExitCommand exitCommand = new ExitCommand();
-        exitCommand.execute();
-
+        return Operation.values()[ConsoleHelper.readInt()];
     }
 }
