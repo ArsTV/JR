@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import t3110.command.ExitCommand;
+
 
 /**
  * Created by DELL on 11/1/2017.
@@ -25,8 +27,9 @@ public class Archiver {
         zipFileManager.createZip(path1);
 
         reader.close();
-
-
+        
+        ExitCommand exitCommand = new ExitCommand();
+        exitCommand.execute();
 
     }
 }
