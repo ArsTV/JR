@@ -25,6 +25,7 @@ public class FileManager {
         return fileList;
     }
 
+    // the method will stack all the files found the passed path
     private void collectFileList(Path path) throws IOException{
 
         if(Files.isRegularFile(path)){
