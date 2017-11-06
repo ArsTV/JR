@@ -1,15 +1,19 @@
 package t3110;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import t3110.exception.PathIsNotFoundException;
+import t3110.exception.WrongZipFileException;
 
 /**
  * Created by DELL on 11/1/2017.
@@ -54,30 +58,13 @@ public class ZipFileManager {
             throw new PathIsNotFoundException();
         }
 
-        /*ZipEntry zipEntry = new ZipEntry(source.getFileName().toString());
-
-        zipOutputStream.putNextEntry(zipEntry);
-
-        InputStream inputStream = Files.newInputStream(source);
-            int i = 0;
-            while ((i = inputStream.read()) != -1) {
-                zipOutputStream.write(i);
-            }
-            zipOutputStream.closeEntry();
-            zipOutputStream.close();
-            inputStream.close();*/
     }
 
     private void addNewZipEntry(ZipOutputStream zipOutputStream, Path filePath, Path fileName) throws Exception{
         try(InputStream inputStream = Files.newInputStream(filePath.resolve(fileName))) {
 
             ZipEntry zipEntry = new ZipEntry(fileName.toString());
-            zipOutputStream.putNextEntry(zipEntry);
-
-            /*int temp;
-            while ((temp = inputStream.read()) != -1) {
-                zipOutputStream.write(temp);
-            }*/
+            zipOutputStream.putNextEntry(zipEntry);        
 
             copyData(inputStream, zipOutputStream);
 
@@ -87,10 +74,38 @@ public class ZipFileManager {
     }
 
     private void copyData(InputStream in, OutputStream out) throws Exception{
-        int temp;
+        /*int temp;
         while((temp = in.read()) != -1){
             out.write(temp);
+        }*/
+    	byte[] buffer = new byte[8 * 1024];
+        int len;
+        while ((len = in.read(buffer)) > 0) {
+            out.write(buffer, 0, len);
         }
+    }
+    
+    public List<FileProperties> getFilesList() throws Exception{
+
+        if(!Files.isRegularFile(zipFile)){
+            throw  new WrongZipFileException();
+        }
+
+        List<FileProperties> filePropertiesList = new ArrayList<>();
+
+        try(ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))){
+            ZipEntry zipEntry;
+            while ((zipEntry = zipInputStream.getNextEntry()) != null){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                copyData(zipInputStream, out);
+
+                FileProperties fileProperties = new FileProperties(
+                        zipEntry.getName(), zipEntry.getSize(), zipEntry.getCompressedSize(), zipEntry.getMethod());
+
+                filePropertiesList.add(fileProperties);
+            }
+        }
+        return filePropertiesList;
     }
 
 }
