@@ -107,5 +107,35 @@ public class ZipFileManager {
         }
         return filePropertiesList;
     }
+    
+    public void extractAll(Path outputFolder) throws Exception{
+    	
+        if(!Files.isRegularFile(zipFile)){
+            throw new WrongZipFileException();
+        }
+        
+        //Creating directory if folder is not exist
+        if(Files.notExists(outputFolder)){
+            Files.createDirectories(outputFolder);
+        }
+        try(ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))) {
 
+            ZipEntry zipEntry;
+            
+            //extracting all files to the folder
+            while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+                String fileName = zipEntry.getName();
+                Path fullPath = outputFolder.resolve(fileName);
+
+                Path parentPAth = fullPath.getParent();
+                if(Files.notExists(parentPAth)){
+                    Files.createDirectories(parentPAth);
+                }
+
+                try(OutputStream outputStream = Files.newOutputStream(fullPath)){
+                    copyData(zipInputStream, outputStream);
+                }
+            }
+        }
+    }
 }
