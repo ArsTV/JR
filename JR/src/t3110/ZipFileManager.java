@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -138,4 +141,48 @@ public class ZipFileManager {
             }
         }
     }
+    
+
+    public void removeFiles(List<Path> pathList) throws Exception{
+        if(!Files.isRegularFile(zipFile)){
+            throw new WrongZipFileException();
+        }
+
+        Path tempFile = Files.createTempFile(null, null);
+
+        try(ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tempFile))){
+            try(ZipInputStream in = new ZipInputStream(Files.newInputStream(zipFile))){
+
+                ZipEntry zipEntry = in.getNextEntry();
+
+                //copy only necessaire files
+                while (zipEntry != null){
+                    Path archiveFile = Paths.get(zipEntry.getName());
+
+                    if(!pathList.contains(archiveFile)){
+                        String fileName = zipEntry.getName();
+                        out.putNextEntry(new ZipEntry(fileName));
+
+                        copyData(in, out);
+
+                        in.getNextEntry();
+                        out.closeEntry();
+                    }
+                    else{
+                        ConsoleHelper.writeMessage("File " + archiveFile + " was deleted from the archive.");
+                    }
+                    zipEntry = in.getNextEntry();
+                }
+            }
+        }
+        
+        // copy from temp file to the new zip archive file
+        Files.move(tempFile, zipFile, StandardCopyOption.REPLACE_EXISTING);
+    }
+    
+
+    public void removeFile(Path path) throws Exception{
+        removeFiles(Collections.singletonList(path));
+    }
+
 }
