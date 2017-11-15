@@ -1,6 +1,9 @@
 package t3209;
 
 import javax.swing.*;
+
+import t3209.listeners.FrameListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,11 +31,29 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-    public void init(){
+    public void init() {
+        initGui();
+        FrameListener frameListener = new FrameListener(this);
+        this.addWindowListener(frameListener);
+        this.setVisible(true);
 
     }
 
-    public void exit(){
+    public void initMenuBar() {
+
+    }
+
+    public void initEditor() {
+
+    }
+
+    public void initGui() {
+        initMenuBar();
+        initEditor();
+        pack();
+    }
+
+    public void exit() {
         controller.exit();
     }
 }
