@@ -1,5 +1,6 @@
 package t3209;
 
+
 import javax.swing.*;
 
 import t3209.listeners.FrameListener;
@@ -31,7 +32,7 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-    public void init() {
+    public void init(){
         initGui();
         FrameListener frameListener = new FrameListener(this);
         this.addWindowListener(frameListener);
@@ -39,21 +40,25 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-    public void initMenuBar() {
+    public void initMenuBar(){
 
     }
 
-    public void initEditor() {
+    public void initEditor(){
 
     }
 
-    public void initGui() {
+    public void initGui(){
         initMenuBar();
         initEditor();
         pack();
     }
 
-    public void exit() {
+    public void selectedTabChanged(){
+
+    }
+
+    public void exit(){
         controller.exit();
     }
 }
