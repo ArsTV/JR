@@ -4,7 +4,10 @@ package t3209;
 import javax.swing.*;
 
 import t3209.listeners.FrameListener;
+import t3209.listeners.TabbedPaneChangeListener;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -45,7 +48,15 @@ public class View extends JFrame implements ActionListener {
     }
 
     public void initEditor(){
+        htmlTextPane.setContentType("text/html" );
+        tabbedPane.addTab("HTML", new JScrollPane(htmlTextPane));
+        tabbedPane.addTab("Text", new JScrollPane(plainTextPane));
 
+        tabbedPane.setPreferredSize(new Dimension(120,80));
+
+        tabbedPane.addChangeListener(new TabbedPaneChangeListener(this));
+
+        this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
 
     public void initGui(){
