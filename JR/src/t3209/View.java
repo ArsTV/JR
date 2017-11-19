@@ -20,6 +20,21 @@ public class View extends JFrame implements ActionListener {
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTextPane htmlTextPane = new JTextPane();
     private JEditorPane plainTextPane = new JEditorPane();
+    
+    public View(){
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName().getClass().getName());
+        } catch (IllegalAccessException e) {
+            ExceptionHandler.log(e);
+        } catch (InstantiationException e) {
+            ExceptionHandler.log(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            ExceptionHandler.log(e);
+        } catch (ClassNotFoundException e) {
+            ExceptionHandler.log(e);
+        }
+    }
+
 
 
     public Controller getController() {
@@ -44,7 +59,17 @@ public class View extends JFrame implements ActionListener {
     }
 
     public void initMenuBar(){
+        JMenuBar jMenuBar = new JMenuBar();
 
+        MenuHelper.initFileMenu(this, jMenuBar);
+        MenuHelper.initEditMenu(this, jMenuBar);
+        MenuHelper.initStyleMenu(this, jMenuBar);
+        MenuHelper.initAlignMenu(this, jMenuBar);
+        MenuHelper.initColorMenu(this,jMenuBar);
+        MenuHelper.initFontMenu(this, jMenuBar);
+        MenuHelper.initHelpMenu(this, jMenuBar);
+
+        getContentPane().add(jMenuBar, BorderLayout.NORTH);
     }
 
     public void initEditor(){
