@@ -1,13 +1,15 @@
 package t3209;
 
 
+
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 
 import t3209.listeners.FrameListener;
 import t3209.listeners.TabbedPaneChangeListener;
+import t3209.listeners.UndoListener;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,7 +22,18 @@ public class View extends JFrame implements ActionListener {
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTextPane htmlTextPane = new JTextPane();
     private JEditorPane plainTextPane = new JEditorPane();
-    
+
+    private UndoManager undoManager = new UndoManager();
+    private UndoListener undoListener = new UndoListener( undoManager);
+
+    public UndoListener getUndoListener() {
+        return undoListener;
+    }
+
+    public void resetUndo(){
+        undoManager.discardAllEdits();
+        }
+
     public View(){
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName().getClass().getName());
@@ -34,7 +47,6 @@ public class View extends JFrame implements ActionListener {
             ExceptionHandler.log(e);
         }
     }
-
 
 
     public Controller getController() {
@@ -74,7 +86,6 @@ public class View extends JFrame implements ActionListener {
 
     public void initEditor(){
         htmlTextPane.setContentType("text/html" );
-        
         tabbedPane.addTab("HTML", new JScrollPane(htmlTextPane));
         tabbedPane.addTab("Text", new JScrollPane(plainTextPane));
 
@@ -95,16 +106,32 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-
     public boolean canUndo(){
-        return false;
+        return undoManager.canUndo();
     }
 
     public boolean canRedo(){
-        return false;
+        return undoManager.canRedo();
     }
-    
+
+    public void undo(){
+        try {
+            undoManager.undo();
+        } catch (Exception e){
+            ExceptionHandler.log(e);
+        }
+    }
+
+    public void redo(){
+        try{
+            undoManager.redo();
+        } catch(Exception e){
+            ExceptionHandler.log(e);
+        }
+    }
+
     public void exit(){
         controller.exit();
     }
 }
+
