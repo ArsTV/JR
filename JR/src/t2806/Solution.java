@@ -9,6 +9,24 @@ public class Solution {
     public static void main(String[] args) throws InterruptedException {
         //Add your code here
 
+        ExecutorService service = Executors.newFixedThreadPool(5);
+
+        for (int i = 1; i < 11; i++) {
+            final int j = i;
+            Thread t = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    doExpensiveOperation(j);
+                }
+            });
+
+            service.submit(t);
+        }
+
+        service.awaitTermination(5,TimeUnit.SECONDS);
+        service.shutdown();
+
         /* output example
 pool-1-thread-2, localId=2
 pool-1-thread-1, localId=1
