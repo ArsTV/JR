@@ -19,15 +19,18 @@ public class Solution {
         for (int i = 1; i <= 10; i++) {
             System.out.printf("Try %d - enter your number: ", i);
             tryNumber = scanner.nextInt();
-            if (tryNumber < secret)
+            if (tryNumber < secret){
                 if (i < 10)
                     System.out.println("The number is greater than");
-            if (tryNumber > secret)
+            }
+            if (tryNumber > secret){
                 if (i < 10)
                     System.out.println("The number is less than");
-            if (tryNumber == secret)
+            }
+            if (tryNumber == secret){
                 i = stopGame();
-            flagWin = true;
+                flagWin = true;
+            }
         }
         if (flagWin)
             printCongratulations(tryNumber);
