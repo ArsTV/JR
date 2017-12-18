@@ -16,20 +16,12 @@ public class Order {
         dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    public boolean isEmpty() {
+        return dishes.isEmpty();
+    }
+
     @Override
     public String toString() {
-        StringBuilder order = new StringBuilder();
-        if(dishes.isEmpty()){
-            order.append("");
-        } else {
-            for (int i = 0; i < dishes.size(); i++) {
-                order.append(dishes.get(i).toString());
-                if (i != dishes.size()-1){
-                    order.append(", ");
-                }
-            }
-            return "Your order: [" + order.toString() + "] of " + tablet;
-        }
-        return super.toString();
+        return dishes.isEmpty() ? "" : "Your order: " + dishes + " of " + tablet;
     }
 }

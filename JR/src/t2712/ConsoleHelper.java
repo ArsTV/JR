@@ -9,51 +9,42 @@ import java.util.List;
 import t2712.kitchen.Dish;
 
 public class ConsoleHelper {
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    
     public static void writeMessage(String message){
         System.out.println(message);
     }
 
     public static String readString() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line = reader.readLine();
-        reader.close();
         return line;
     }
 
+       
     public static List<Dish> getAllDishesForOrder() throws IOException {
-        writeMessage(Dish.allDishesToString());
-
-        writeMessage("Type what you choosed from the dishes(one line is one name of a dish, type exit to finish the order):");
-
         List<Dish> dishes = new ArrayList<>();
-
-        for(;;){
-            String lineOfChoosedDishes = readString();
-            if (lineOfChoosedDishes.equals("exit")){
+        ConsoleHelper.writeMessage("Type what you choosed from the dishes%n(one line is one name of a dish, type exit to finish the order):");
+        ConsoleHelper.writeMessage(Dish.allDishesToString());
+        while (true) {
+            String dishToOrder = readString();
+            if (dishToOrder.equalsIgnoreCase("exit")) {
                 break;
             }
 
-            switch (lineOfChoosedDishes){
-                case "Fish":
-                    dishes.add(Dish.Fish);
-                    break;
-                case "Steak":
-                    dishes.add(Dish.Steak);
-                    break;
-                case "Soup":
-                    dishes.add(Dish.Soup);
-                    break;
-                case "Juice":
-                    dishes.add(Dish.Juice);
-                    break;
-                case "Water":
-                    dishes.add(Dish.Water);
-                    break;
-                default:
-                    writeMessage("Sorry, we don't have this dish. Please choose another one.");
+            if(dishToOrder.isEmpty()){
+                writeMessage("Dish is not selected");
+                continue;
+            }
+            boolean found = false;
+            for(Dish d : Dish.values())
+                if(d.name().equalsIgnoreCase(dishToOrder)) {
+                    dishes.add(d);
+                    found = true;
+                }
+            if(!found){
+                writeMessage("Sorry, we don't have this dish. Please choose another one");
             }
         }
-
         return dishes;
     }
 

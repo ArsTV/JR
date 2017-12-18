@@ -2,6 +2,7 @@ package t2712;
 
 
 import java.io.IOException;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +11,7 @@ import t2712.kitchen.Order;
 /**
  * Created by DELL on 12/13/2017.
  */
-public class Tablet {
+public class Tablet extends Observable {
     final int number;
     public static Logger logger = Logger.getLogger(Tablet.class.getName());
 
@@ -19,13 +20,19 @@ public class Tablet {
         this.number = number;
     }
 
-    public void createOrder(){
-        try{
-            Order order = new Order(this);
-        } catch (IOException e){
+    public Order createOrder(){
+        Order order;
+        try
+        {
+            order = new Order(this);
+            ConsoleHelper.writeMessage(order.toString());
+            setChanged();
+            notifyObservers(order);
+        } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
+            return null;
         }
-
+        return order;
     }
 
     @Override
