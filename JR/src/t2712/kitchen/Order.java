@@ -20,6 +20,15 @@ public class Order {
         return dishes.isEmpty();
     }
 
+    public int getTotalCookingTime() {
+        int sumTime = 0;
+        for (Dish d : dishes) {
+            sumTime += d.getDuration();
+        }
+
+        return sumTime;
+    }
+
     @Override
     public String toString() {
         return dishes.isEmpty() ? "" : "Your order: " + dishes + " of " + tablet;
