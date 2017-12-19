@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import t2712.ad.AdvertisementManager;
 import t2712.kitchen.Order;
 
 /**
@@ -13,6 +14,8 @@ import t2712.kitchen.Order;
  */
 public class Tablet extends Observable {
     final int number;
+    AdvertisementManager advertisementManager;
+
     public static Logger logger = Logger.getLogger(Tablet.class.getName());
 
     public Tablet(int number) {
