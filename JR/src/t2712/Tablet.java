@@ -24,13 +24,18 @@ public class Tablet extends Observable {
     }
 
     public Order createOrder(){
-        Order order;
+        Order order = null;
         try
         {
             order = new Order(this);
             ConsoleHelper.writeMessage(order.toString());
-            setChanged();
-            notifyObservers(order);
+
+            if(!order.isEmpty()){
+                setChanged();
+                notifyObservers(order);
+                advertisementManager = new AdvertisementManager(order.getTotalCookingTime()*60);
+                advertisementManager.processVideos();
+            }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
             return null;
@@ -40,8 +45,7 @@ public class Tablet extends Observable {
 
     @Override
     public String toString() {
-        return "Tablet{" +
-                "number=" + number +
-                '}';
+        return "Tablet{number=" + number + "}";
     }
+
 }
