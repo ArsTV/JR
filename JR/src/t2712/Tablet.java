@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import t2712.ad.AdvertisementManager;
+import t2712.ad.NoVideoAvailableException;
 import t2712.kitchen.Order;
 
 /**
@@ -23,18 +24,22 @@ public class Tablet extends Observable {
         this.number = number;
     }
 
-    public Order createOrder(){
+    public Order createOrder() {
         Order order = null;
-        try
-        {
+        try {
             order = new Order(this);
             ConsoleHelper.writeMessage(order.toString());
 
-            if(!order.isEmpty()){
+            if (!order.isEmpty()) {
+
+                try {
+                    advertisementManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
+                    advertisementManager.processVideos();
+                } catch (NoVideoAvailableException e) {
+                    logger.log(Level.INFO, "No video is available for the order " + order);
+                }
                 setChanged();
                 notifyObservers(order);
-                advertisementManager = new AdvertisementManager(order.getTotalCookingTime()*60);
-                advertisementManager.processVideos();
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");

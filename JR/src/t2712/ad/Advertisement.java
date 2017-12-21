@@ -3,6 +3,7 @@ package t2712.ad;
 /**
  * Created by DELL on 12/19/2017.
  */
+
 public class Advertisement {
     private Object content;
     private String name;
@@ -26,6 +27,25 @@ public class Advertisement {
 
     public int getDuration() {
         return duration;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void revalidate() {
+        if (hits <= 0) {
+            throw new UnsupportedOperationException();
+        }
+        hits--;
+    }
+
+    @Override
+    public String toString() {
+        return name + " is displaying... " +
+                getAmountPerOneDisplaying() +
+                ", " +
+                getAmountPerOneDisplaying() / duration * 1000;
     }
 
     public long getAmountPerOneDisplaying() {

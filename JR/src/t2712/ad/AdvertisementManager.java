@@ -1,5 +1,7 @@
 package t2712.ad;
 
+import java.util.List;
+
 import t2712.ConsoleHelper;
 
 public class AdvertisementManager {
@@ -12,6 +14,9 @@ public class AdvertisementManager {
     }
 
     public void processVideos(){
-        ConsoleHelper.writeMessage("calling processVideos method");
+        List<Advertisement> availableVideos = storage.list();
+        if (availableVideos.isEmpty()) throw new NoVideoAvailableException();
+
+        //ConsoleHelper.writeMessage("calling processVideos method");
     }
 }
