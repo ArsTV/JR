@@ -30,6 +30,9 @@ public class Solution {
                 @Override
                 public void run() {
                     System.out.println(member + " is preparing to play");
+                    
+                    //waiting for all threads will be created
+                    phaser.arriveAndAwaitAdvance();
 
                     if (!isEveryoneReady) {
                         isEveryoneReady = true;
@@ -38,6 +41,8 @@ public class Solution {
                     character.run();
                 }
             }.start();
-        }        
+        }    
+        //starts running run methods of the tasks
+        phaser.arriveAndDeregister(); 
     }
 }
