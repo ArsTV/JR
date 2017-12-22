@@ -7,7 +7,22 @@ import java.util.concurrent.TimeUnit;
 public class Solution {
     public static void main(String[] args) throws InterruptedException {
         //Add your code here
-        
+        LinkedBlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+        for (int i = 1; i <= 10; i++) {
+            final int j = i;
+            queue.add(new Runnable() {
+                @Override
+                public void run() {
+                    doExpensiveOperation(j);
+                }
+            });
+        }
+
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 5, 1000, TimeUnit.MILLISECONDS,queue);
+        threadPoolExecutor.prestartAllCoreThreads();
+        threadPoolExecutor.shutdown();
+        threadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
         /* output example
 pool-1-thread-2, localId=2
 pool-1-thread-3, localId=3
