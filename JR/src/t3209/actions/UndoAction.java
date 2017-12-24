@@ -10,10 +10,10 @@ import java.awt.event.ActionEvent;
  * Created by DELL on 11/16/2017.
  */
 public class UndoAction extends AbstractAction {
-    View view;
+    private View view;
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        view.undo();
     }
 
     public UndoAction(View view) {
