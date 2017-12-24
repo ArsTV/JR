@@ -8,24 +8,29 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ReadWriteMap<K, V> {
     private final Map<K, V> map;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock readLock;
-    private final Lock writeLock;
+    private final Lock readLock = lock.readLock();;
+    private final Lock writeLock = lock.writeLock();
 
     public ReadWriteMap(Map<K, V> map) {
         this.map = map;
     }
 
     public V put(K key, V value) {
-        try {            
+        try {
+            writeLock.lock();
             return map.put(key, value);
-        } finally {            
+
+        } finally {
+            writeLock.unlock();
         }
     }
 
     public V get(K key) {
-        try {            
+        try {
+            readLock.lock();
             return map.get(key);
-        } finally {            
+        } finally {
+            readLock.unlock();
         }
     }
 }
