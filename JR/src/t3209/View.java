@@ -3,6 +3,7 @@ package t3209;
 
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 import javax.swing.undo.UndoManager;
 
 import t3209.listeners.FrameListener;
@@ -108,6 +109,21 @@ public class View extends JFrame implements ActionListener {
     
     public boolean isHtmlTabSelected(){
         return tabbedPane.getSelectedIndex() == 0;
+    }
+    
+
+    public void selectHtmlTab(){
+        tabbedPane.setSelectedIndex(0);
+        resetUndo();
+    }
+
+    public void update(){
+        HTMLDocument htmlDocument = controller.getDocument();
+        htmlTextPane.setDocument(htmlDocument);
+    }
+
+    public void showAbout(){
+        JOptionPane.showMessageDialog(getContentPane(),"Arsenii corporation","About", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public boolean canUndo(){
