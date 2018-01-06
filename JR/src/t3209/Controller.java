@@ -68,8 +68,13 @@ public class Controller {
         return stringWriter.toString();
     }
     
-    public void createNewDocument(){
 
+    public void createNewDocument(){
+        view.selectHtmlTab();
+        resetDocument();
+        view.setTitle("HTML editor");
+        view.resetUndo();
+        currentFile = null;
     }
 
     public void openDocument(){}
@@ -79,9 +84,8 @@ public class Controller {
     public void saveDocumentAs(){}
 
     public void init(){
-
+        createNewDocument();
     }
-
     public void exit(){
         System.exit(0);
     }
