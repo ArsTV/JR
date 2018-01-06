@@ -6,6 +6,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -79,10 +80,41 @@ public class Controller {
         currentFile = null;
     }
 
-    public void openDocument(){}
+    public void openDocument(){
+        view.selectHtmlTab();
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileFilter(new HTMLFileFilter());
+        int chooser = jFileChooser.showOpenDialog(view);
+        if (chooser == JFileChooser.APPROVE_OPTION) {
+            currentFile = jFileChooser.getSelectedFile();
+            resetDocument();
+            view.setTitle(currentFile.getName());
+            try {
+                FileReader fileReader = new FileReader(currentFile);
+                new HTMLEditorKit().read(fileReader, document, 0);
+                view.resetUndo();
 
-    public void saveDocument(){}
+            } catch (Exception e) {
+                ExceptionHandler.log(e);
+            }
+        }
+    }
 
+    public void saveDocument(){
+        if (currentFile == null) saveDocumentAs();
+        else {
+            view.selectHtmlTab();
+            view.setTitle(currentFile.getName());
+
+            try {
+                FileWriter fileWriter = new FileWriter(currentFile);
+                new HTMLEditorKit().write(fileWriter, document, 0, document.getLength());
+            } catch (Exception e) {
+                ExceptionHandler.log(e);
+            }
+        }
+    }
+    
     public void saveDocumentAs(){
         view.selectHtmlTab();
         JFileChooser jFileChooser = new JFileChooser();
