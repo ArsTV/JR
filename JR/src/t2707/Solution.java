@@ -39,7 +39,6 @@ public class Solution {
         Thread.sleep(100);
         t2.start();
         Thread.sleep(100);
-
         return !t2.getState().equals(Thread.State.BLOCKED);
     }
 
