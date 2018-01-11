@@ -8,6 +8,16 @@ public class Solution {
 
     public void someMethod() {
         //implement logic here, use the lock field
+    	lock.lock();
+        try {
+            if (lock.tryLock()) {
+                ifLockIsFree();
+            } else {
+                ifLockIsBusy();
+            }
+        }catch (Exception e){
+            lock.unlock();
+        }
     }
 
     public void ifLockIsFree() {
