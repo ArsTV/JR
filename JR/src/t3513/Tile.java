@@ -15,6 +15,10 @@ public class Tile {
     public Tile() {
         value = 0;
     }
+    
+    public void setValue(int value) {
+        this.value = value;
+    }
 
     public boolean isEmpty() {
         if (value == 0)
