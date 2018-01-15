@@ -18,6 +18,10 @@ public class Model {
         maxTile = 2;
     }
 
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
     private void addTile() {
         List<Tile> list = getEmptyTiles();
         if (list != null && list.size() != 0) {
@@ -29,7 +33,7 @@ public class Model {
         List<Tile> list = new ArrayList<>();
         for (int i = 0; i < FIELD_WIDTH; i++) {
             for (int j = 0; j < FIELD_WIDTH; j++) {
-                if(gameTiles[i][j].isEmpty())
+                if (gameTiles[i][j].isEmpty())
                     list.add(gameTiles[i][j]);
             }
         }
@@ -73,6 +77,7 @@ public class Model {
                 if (tiles[j].getValue() > maxTile) maxTile = tiles[j].getValue();
                 score += tiles[j].getValue();
                 isChanged = true;
+
             }
         }
 
@@ -90,7 +95,7 @@ public class Model {
         return isChanged;
     }
 
-    public void left(){
+    public void left() {
         boolean isChanged = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             if (compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) {
@@ -100,7 +105,6 @@ public class Model {
         if (isChanged)
             addTile();
     }
-    
 
     public void right() {
         Tile[][] arrayTemp = new Tile[4][4];
@@ -139,6 +143,7 @@ public class Model {
         arrayTemp = rotateArray(gameTiles);
         gameTiles = arrayTemp;
         left();
+
         arrayTemp = rotateArray(gameTiles);
         gameTiles = arrayTemp;
         arrayTemp = rotateArray(gameTiles);
@@ -160,5 +165,22 @@ public class Model {
         return arrayRot;
     }
 
+    public boolean canMove(){
+        if (!getEmptyTiles().isEmpty())
+            return true;
+        for (int i = 0; i < gameTiles.length; i++) {
+            for (int j = 1; j < gameTiles[0].length; j++) {
+                if (gameTiles[i][j].value == gameTiles[i][j - 1].value)
+                    return true;
+            }
+        }
+        for (int j = 0; j < gameTiles.length; j++) {
+            for (int i = 1; i < gameTiles[0].length; i++) {
+                if (gameTiles[i][j].value == gameTiles[i - 1][j].value)
+                    return true;
+            }
+        }
+        return false;
+    }
 
 }
