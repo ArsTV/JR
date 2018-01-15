@@ -2,6 +2,7 @@ package t3513;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by DELL on 1/12/2018.
@@ -11,6 +12,9 @@ public class Model {
     int maxTile;
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
+    private Stack previousStates = new Stack();
+    private Stack previousScores = new Stack();
+    private boolean isSaveNeeded = true;
 
     public Model() {
         resetGameTiles();
@@ -182,5 +186,30 @@ public class Model {
         }
         return false;
     }
+    
+
+    private void saveState(Tile[][] tiles){
+        Tile[][] matrixTemp = new Tile[tiles.length][tiles[0].length];
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                matrixTemp[i][j] = new Tile(tiles[i][j].getValue());
+            }
+        }
+
+        previousStates.push(matrixTemp);
+        int scoreTemp = score;
+        previousScores.push(scoreTemp);
+
+        isSaveNeeded = false;
+    }
+
+    public void rollback(){
+        if(!previousStates.isEmpty() && !previousScores.isEmpty()){
+            this.score = (int) previousScores.pop();
+            this.gameTiles = (Tile[][])previousStates.pop();
+        }
+
+    }
+
 
 }
