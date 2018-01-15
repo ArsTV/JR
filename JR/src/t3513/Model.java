@@ -100,5 +100,65 @@ public class Model {
         if (isChanged)
             addTile();
     }
+    
+
+    public void right() {
+        Tile[][] arrayTemp = new Tile[4][4];
+
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        left();
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+
+
+    }
+
+    public void up() {
+        Tile[][] arrayTemp = new Tile[4][4];
+
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        left();
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+
+    }
+
+    public void down() {
+        Tile[][] arrayTemp = new Tile[4][4];
+
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        left();
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+        arrayTemp = rotateArray(gameTiles);
+        gameTiles = arrayTemp;
+    }
+
+    //Rotation a two dimensional array
+    public Tile[][] rotateArray(Tile[][] array) {
+        Tile[][] arrayRot = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+
+        for (int i = 0; i < arrayRot.length; i++) {
+            for (int j = 0; j < arrayRot[0].length; j++) {
+                arrayRot[i][j] = array[arrayRot[0].length - j - 1][i];
+            }
+        }
+
+        return arrayRot;
+    }
+
 
 }
