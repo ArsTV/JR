@@ -20,7 +20,7 @@ public class ZipAddCommand extends ZipCommand{
 
             ZipFileManager zipFileManager = getZipFileManager();
 
-            ConsoleHelper.writeMessage("Write full address of the file:");
+            ConsoleHelper.writeMessage("Write full address of the file for add it to the archive:");
             Path sourcePath = Paths.get(ConsoleHelper.readString());
             zipFileManager.addFile(sourcePath);
 
